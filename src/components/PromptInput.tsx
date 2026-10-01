@@ -4,6 +4,8 @@ import { MAX_PROMPT_LENGTH, validatePrompt } from '../utils/promptValidation';
 interface PromptInputProps {
   onGenerate: (prompt: string) => void;
   isLoading: boolean;
+  history?: string[];
+  onClearHistory?: () => void;
 }
 
 const EXAMPLES = [
@@ -15,7 +17,12 @@ const EXAMPLES = [
   '테이블 행 상세보기 패널. 선택한 고객의 기본 정보와 최근 활동 표시',
 ];
 
-export function PromptInput({ onGenerate, isLoading }: PromptInputProps) {
+export function PromptInput({
+  onGenerate,
+  isLoading,
+  history = [],
+  onClearHistory,
+}: PromptInputProps) {
   const [prompt, setPrompt] = useState('');
 
   const trimmed = prompt.trim();
@@ -75,6 +82,36 @@ export function PromptInput({ onGenerate, isLoading }: PromptInputProps) {
           </p>
         )}
       </form>
+
+      {history.length > 0 && (
+        <div className="examples">
+          <div className="examples__head">
+            <label className="field-label" htmlFor="history">
+              최근 프롬프트
+            </label>
+            {onClearHistory && (
+              <button className="btn btn--compact" onClick={onClearHistory} type="button">
+                기록 지우기
+              </button>
+            )}
+          </div>
+          <div className="listbox" id="history">
+            {history.map((item) => (
+              <button
+                key={item}
+                className={`listbox__item ${
+                  prompt === item ? 'listbox__item--selected' : ''
+                }`}
+                onClick={() => setPrompt(item)}
+                title={item}
+                type="button"
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="examples">
         <label className="field-label" htmlFor="examples">
