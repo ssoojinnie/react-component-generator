@@ -1,0 +1,71 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  color-scheme: light;
+
+  /* System palette */
+  --desktop: #008080;
+  --face: #c0c0c0;
+  --face-light: #dfdfdf;
+  --bevel-light: #ffffff;
+  --bevel-shadow: #808080;
+  --bevel-dark: #0a0a0a;
+  --navy: #000080;
+  --navy-soft: #1084d0;
+  --field: #ffffff;
+  --text: #000000;
+  --text-inverse: #ffffff;
+  --text-disabled: #808080;
+  --error: #a80000;
+
+  /* Depth */
+  --raise: inset -1px -1px 0 var(--bevel-dark), inset 1px 1px 0 var(--bevel-light),
+    inset -2px -2px 0 var(--bevel-shadow), inset 2px 2px 0 var(--face-light);
+  --sink: inset -1px -1px 0 var(--bevel-light), inset 1px 1px 0 var(--bevel-shadow),
+    inset -2px -2px 0 var(--face-light), inset 2px 2px 0 var(--bevel-dark);
+  --press: inset 1px 1px 0 var(--bevel-shadow), inset -1px -1px 0 var(--face-light),
+    inset 2px 2px 0 var(--bevel-dark);
+  --sink-thin: inset -1px -1px 0 var(--bevel-light), inset 1px 1px 0 var(--bevel-shadow);
+  --raise-thin: inset -1px -1px 0 var(--bevel-shadow), inset 1px 1px 0 var(--bevel-light);
+
+  --ui-font: Tahoma, 'MS Sans Serif', 'Apple SD Gothic Neo', 'Malgun Gothic', Verdana,
+    sans-serif;
+  --mono-font: 'Lucida Console', 'DejaVu Sans Mono', Consolas, monospace;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--desktop);
+  color: var(--text);
+  font-family: var(--ui-font);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* The authentic Windows focus rectangle, which also satisfies
+   keyboard-visible focus. */
+:focus-visible {
+  outline: 1px dotted var(--text);
+  outline-offset: -4px;
+}
+
+::selection {
+  background: var(--navy);
+  color: var(--text-inverse);
+}

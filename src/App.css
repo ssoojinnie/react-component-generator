@@ -1,0 +1,791 @@
+/* ===========================================================
+   Component Generator 97
+   Depth is drawn with 2px system bevels only: no shadows,
+   no radii, no gradients outside the title bar.
+   =========================================================== */
+
+.desktop {
+  min-height: 100vh;
+  padding: 10px 10px 42px;
+}
+
+/* --- Window frame ------------------------------------------ */
+
+.window {
+  background: var(--face);
+  box-shadow: var(--raise);
+}
+
+.window--app {
+  display: flex;
+  flex-direction: column;
+  width: min(1320px, 100%);
+  min-height: calc(100vh - 52px);
+  margin: 0 auto;
+  padding: 3px;
+}
+
+.titlebar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 20px;
+  padding: 0 2px 0 3px;
+  background: var(--navy);
+  color: var(--text-inverse);
+  user-select: none;
+}
+
+.titlebar--app {
+  background: linear-gradient(90deg, var(--navy) 0%, var(--navy-soft) 100%);
+}
+
+.titlebar__icon {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+}
+
+.titlebar__text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.titlebar__controls {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 2px;
+}
+
+/* Frame ornament on the app window: drawn, never focusable. */
+.titlebar__ornament {
+  display: grid;
+  width: 16px;
+  height: 14px;
+  place-items: center;
+  background: var(--face);
+  box-shadow: var(--raise-thin);
+  color: var(--text);
+  font-family: var(--mono-font);
+  font-size: 9px;
+  line-height: 1;
+}
+
+.titlebar__btn {
+  display: grid;
+  width: 16px;
+  height: 14px;
+  place-items: center;
+  background: var(--face);
+  border: 0;
+  box-shadow: var(--raise-thin);
+  color: var(--text);
+  cursor: pointer;
+  font-family: var(--mono-font);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.titlebar__btn:active {
+  box-shadow: var(--press);
+}
+
+.titlebar__btn:focus-visible {
+  outline-offset: -3px;
+}
+
+/* --- Menu bar --------------------------------------------- */
+
+.menubar {
+  display: flex;
+  gap: 2px;
+  padding: 2px 0 3px;
+  border-bottom: 1px solid var(--bevel-shadow);
+  user-select: none;
+}
+
+.menubar span {
+  padding: 2px 7px;
+  font-size: 11px;
+  color: var(--text-disabled);
+}
+
+/* --- Window body ------------------------------------------ */
+
+.window__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 6px;
+}
+
+/* --- Group box -------------------------------------------- */
+
+.groupbox {
+  min-width: 0;
+  padding: 12px 12px 14px;
+  border: 1px solid var(--bevel-shadow);
+  border-right-color: var(--bevel-light);
+  border-bottom-color: var(--bevel-light);
+}
+
+.groupbox > legend {
+  padding: 0 4px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.workbench {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 272px;
+  gap: 10px;
+  align-items: start;
+}
+
+/* --- Form controls ---------------------------------------- */
+
+.field-label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+}
+
+.textbox,
+.prompt-textarea,
+.dropdown {
+  width: 100%;
+  background: var(--field);
+  border: 0;
+  box-shadow: var(--sink);
+  color: var(--text);
+}
+
+.textbox,
+.dropdown {
+  height: 24px;
+  padding: 0 5px;
+}
+
+.textbox {
+  font-family: var(--mono-font);
+  font-size: 11px;
+}
+
+.dropdown {
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.prompt-textarea {
+  min-height: 96px;
+  padding: 6px 7px;
+  font-size: 13px;
+  line-height: 1.55;
+  resize: vertical;
+}
+
+.prompt-textarea::placeholder {
+  color: var(--text-disabled);
+}
+
+/* --- Buttons ---------------------------------------------- */
+
+.btn {
+  min-width: 70px;
+  min-height: 24px;
+  padding: 2px 12px;
+  background: var(--face);
+  border: 0;
+  box-shadow: var(--raise);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.btn:active:not(:disabled) {
+  padding: 3px 11px 1px 13px;
+  box-shadow: var(--press);
+}
+
+.btn:disabled {
+  color: var(--text-disabled);
+  cursor: default;
+  text-shadow: 1px 1px 0 var(--bevel-light);
+}
+
+.btn--default {
+  font-weight: 700;
+}
+
+.btn--compact {
+  min-width: 0;
+  padding: 2px 8px;
+  font-size: 11px;
+}
+
+.btn--icon {
+  display: grid;
+  width: 24px;
+  min-width: 0;
+  padding: 0;
+  place-items: center;
+  font-size: 13px;
+}
+
+.btn--icon:active:not(:disabled) {
+  padding: 1px 0 0 1px;
+}
+
+/* --- Composer --------------------------------------------- */
+
+.composer__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: end;
+}
+
+.composer__hint {
+  margin-top: 6px;
+  color: #3a3a3a;
+  font-size: 11px;
+}
+
+.composer__hint kbd {
+  padding: 0 3px;
+  background: var(--face);
+  box-shadow: var(--raise-thin);
+  font-family: var(--ui-font);
+  font-size: 11px;
+}
+
+.examples {
+  margin-top: 12px;
+}
+
+.listbox {
+  max-height: 128px;
+  overflow-y: auto;
+  background: var(--field);
+  box-shadow: var(--sink);
+  padding: 2px;
+}
+
+.listbox__item {
+  display: block;
+  width: 100%;
+  padding: 3px 5px;
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 12px;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.listbox__item:hover,
+.listbox__item--selected {
+  background: var(--navy);
+  color: var(--text-inverse);
+}
+
+.listbox__item:focus-visible {
+  outline-offset: -2px;
+}
+
+.listbox__item--selected:focus-visible {
+  outline-color: var(--text-inverse);
+}
+
+/* --- Runtime panel ---------------------------------------- */
+
+.runtime__group + .runtime__group {
+  margin-top: 12px;
+}
+
+.key-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 5px;
+}
+
+.key-status {
+  display: flex;
+  gap: 5px;
+  align-items: flex-start;
+  margin-top: 8px;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.key-status__icon {
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
+/* --- Progress --------------------------------------------- */
+
+.progress {
+  padding: 10px 12px;
+  box-shadow: var(--raise-thin);
+}
+
+.progress__label {
+  margin-bottom: 7px;
+  font-size: 11px;
+}
+
+.progress__track {
+  height: 18px;
+  padding: 3px;
+  overflow: hidden;
+  background: var(--field);
+  box-shadow: var(--sink-thin);
+}
+
+.progress__blocks {
+  width: 40%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--navy) 0 10px,
+    transparent 10px 12px
+  );
+  animation: marquee 1.4s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress__blocks {
+    width: 100%;
+    animation: none;
+  }
+}
+
+/* --- Dialog box ------------------------------------------- */
+
+.dialog {
+  width: min(560px, 100%);
+  padding: 3px;
+  background: var(--face);
+  box-shadow: var(--raise);
+}
+
+.dialog__body {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  padding: 16px 14px 14px;
+}
+
+.dialog__message {
+  font-size: 12px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.dialog__message strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.dialog__footer {
+  display: flex;
+  justify-content: center;
+  padding: 0 14px 14px;
+}
+
+/* --- Results ---------------------------------------------- */
+
+.results-area {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.results__bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  padding: 2px 2px 6px;
+}
+
+.results__bar h2 {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* The MDI workspace: component windows float on recessed
+   desktop grey, so the silver chrome reads as foreground. */
+.results {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  box-shadow: var(--sink);
+  background-color: #868686;
+  background-image: repeating-conic-gradient(#808080 0% 25%, #8c8c8c 25% 50%);
+  background-size: 4px 4px;
+}
+
+.results__stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* --- Empty state ------------------------------------------ */
+
+.empty {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  width: min(620px, 100%);
+  margin: auto;
+  padding: 22px 20px;
+  background: var(--face);
+  box-shadow: var(--raise);
+}
+
+.empty h2 {
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.empty p {
+  max-width: 62ch;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* --- Component window ------------------------------------- */
+
+.cwindow {
+  background: var(--face);
+  box-shadow: var(--raise);
+  padding: 3px;
+  scroll-margin-top: 10px;
+}
+
+.cwindow__toolbar {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  padding: 4px 1px;
+  border-bottom: 1px solid var(--bevel-shadow);
+}
+
+.cwindow__stamp {
+  margin-left: auto;
+  padding-right: 4px;
+  color: #3a3a3a;
+  font-family: var(--mono-font);
+  font-size: 11px;
+}
+
+.cwindow__separator {
+  width: 1px;
+  height: 18px;
+  background: var(--bevel-shadow);
+  border-right: 1px solid var(--bevel-light);
+}
+
+/* --- Tabs ------------------------------------------------- */
+
+.tabs {
+  display: flex;
+  gap: 2px;
+  padding: 6px 0 0 4px;
+}
+
+.tab {
+  position: relative;
+  min-width: 74px;
+  padding: 3px 14px 4px;
+  background: var(--face);
+  border: 0;
+  box-shadow: inset 1px 1px 0 var(--bevel-light), inset -1px 0 0 var(--bevel-dark),
+    inset -2px 0 0 var(--bevel-shadow);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.tab--active {
+  z-index: 1;
+  margin: -2px -2px 0;
+  padding: 5px 16px 6px;
+  font-weight: 700;
+}
+
+.tab:focus-visible {
+  outline-offset: -5px;
+}
+
+.tabpanel {
+  padding: 8px;
+  box-shadow: var(--raise-thin);
+}
+
+/* --- Preview ---------------------------------------------- */
+
+.preview__canvas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  padding: 28px;
+  overflow: auto;
+  box-shadow: var(--sink);
+  background-color: #c0c0c0;
+  background-image: repeating-conic-gradient(
+    #bababa 0% 25%,
+    #c8c8c8 25% 50%
+  );
+  background-size: 4px 4px;
+}
+
+.preview__error {
+  margin-top: 8px;
+  padding: 9px 10px;
+  background: var(--field);
+  box-shadow: var(--sink-thin);
+  color: var(--error);
+  font-family: var(--mono-font);
+  font-size: 11px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+/* --- Code ------------------------------------------------- */
+
+.code__bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.code__path {
+  color: #3a3a3a;
+  font-family: var(--mono-font);
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.code__block {
+  max-height: 460px;
+  min-height: 300px;
+  margin: 0;
+  padding: 10px 12px;
+  overflow: auto;
+  background: var(--field);
+  box-shadow: var(--sink);
+  color: var(--text);
+  font-family: var(--mono-font);
+  font-size: 12px;
+  line-height: 1.6;
+  tab-size: 2;
+}
+
+/* --- Status bar ------------------------------------------- */
+
+.statusbar {
+  display: flex;
+  gap: 2px;
+  margin-top: auto;
+  padding: 3px 0 1px;
+}
+
+.statusbar__panel {
+  padding: 2px 6px;
+  box-shadow: var(--sink-thin);
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.statusbar__panel--grow {
+  flex: 1;
+  min-width: 0;
+}
+
+/* --- Taskbar ---------------------------------------------- */
+
+.taskbar {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 10;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  height: 32px;
+  padding: 3px 3px 4px;
+  background: var(--face);
+  border-top: 1px solid var(--bevel-light);
+  box-shadow: 0 -1px 0 var(--face-light);
+}
+
+.taskbar__start {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 5px;
+  align-items: center;
+  height: 24px;
+  padding: 0 7px 0 4px;
+  background: var(--face);
+  border: 0;
+  box-shadow: var(--raise);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.taskbar__start:active {
+  box-shadow: var(--press);
+}
+
+.taskbar__divider {
+  flex: 0 0 auto;
+  width: 1px;
+  height: 22px;
+  margin: 0 2px;
+  background: var(--bevel-shadow);
+  border-right: 1px solid var(--bevel-light);
+}
+
+.taskbar__tasks {
+  display: flex;
+  flex: 1;
+  gap: 3px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.taskbar__task {
+  flex: 0 1 148px;
+  min-width: 0;
+  height: 24px;
+  padding: 0 7px;
+  background: var(--face);
+  border: 0;
+  box-shadow: var(--raise);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 11px;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.taskbar__task--active {
+  box-shadow: var(--press);
+  font-weight: 700;
+}
+
+.taskbar__empty {
+  align-self: center;
+  color: var(--text-disabled);
+  font-size: 11px;
+}
+
+.taskbar__tray {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 6px;
+  align-items: center;
+  height: 24px;
+  padding: 0 7px;
+  box-shadow: var(--sink-thin);
+  font-size: 11px;
+}
+
+/* --- Responsive ------------------------------------------- */
+
+@media (max-width: 900px) {
+  .workbench {
+    grid-template-columns: 1fr;
+  }
+
+  .composer__row {
+    grid-template-columns: 1fr;
+  }
+
+  .composer__row .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 620px) {
+  .desktop {
+    padding: 6px 6px 40px;
+  }
+
+  .window--app {
+    min-height: calc(100vh - 44px);
+  }
+
+  .window__body {
+    padding: 8px 3px;
+  }
+
+  .menubar span:nth-child(n + 4) {
+    display: none;
+  }
+
+  .empty {
+    grid-template-columns: 1fr;
+    padding: 18px 16px;
+  }
+
+  .cwindow__toolbar {
+    flex-wrap: wrap;
+  }
+
+  .cwindow__stamp {
+    margin-left: 0;
+  }
+
+  .statusbar__panel--hide-sm {
+    display: none;
+  }
+
+  .preview__canvas {
+    min-height: 220px;
+    padding: 12px;
+  }
+
+  .taskbar__start span:last-child {
+    display: none;
+  }
+}
