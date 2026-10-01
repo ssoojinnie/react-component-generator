@@ -253,6 +253,24 @@
   align-items: end;
 }
 
+.composer__counter {
+  margin-top: 4px;
+  color: var(--text-disabled);
+  font-size: 11px;
+  text-align: right;
+}
+
+.composer__counter--over {
+  color: var(--error);
+  font-weight: bold;
+}
+
+.composer__error {
+  margin-top: 6px;
+  color: var(--error);
+  font-size: 11px;
+}
+
 .composer__hint {
   margin-top: 6px;
   color: #3a3a3a;
