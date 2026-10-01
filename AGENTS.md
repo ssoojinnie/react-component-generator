@@ -24,7 +24,7 @@ bun run build          # tsc -b && vite build
 
 서버 프로세스에서만 읽는다. 이름은 `ANTHROPIC_API_KEY`, `GOOGLE_API_KEY` 두 개뿐이다 (`server/index.ts:59-62`).
 
-`README.md`는 `cp .env.example .env`를 안내하지만 **저장소에 `.env.example` 파일이 없다.** 에이전트가 이 명령에 의존하면 실패한다. `.env`를 직접 만들거나 UI에서 키를 입력하는 경로를 사용하라.
+**저장소에 `.env.example` 파일이 없다.** `.env`를 직접 만들거나 UI에서 키를 입력하는 경로를 사용하라. `README.md`의 "API 키 설정" 절도 이 두 경로만 안내한다 — `cp .env.example .env`를 되살리지 마라.
 
 ## Golden Rules
 
