@@ -26,6 +26,9 @@ if (typeof window.localStorage?.clear !== 'function') {
 }
 
 // 각 테스트 후 렌더된 DOM을 정리해 테스트 간 격리를 보장한다.
+// localStorage도 함께 비운다 — 영속 state(usePersistentState)를 쓰는 테스트가
+// 남긴 값이 다음 테스트에서 되살아나면 실패가 아니라 순서 의존으로 나타난다.
 afterEach(() => {
   cleanup();
+  localStorage.clear();
 });
