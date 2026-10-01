@@ -61,6 +61,47 @@ describe('PromptInput', () => {
     expect(onGenerate).not.toHaveBeenCalled();
   });
 
+  it('히스토리가 비어 있으면 최근 프롬프트 목록을 보여주지 않는다', () => {
+    render(<PromptInput onGenerate={vi.fn()} isLoading={false} history={[]} />);
+
+    expect(screen.queryByText('최근 프롬프트')).not.toBeInTheDocument();
+  });
+
+  it('히스토리 항목을 최근 순으로 보여준다', () => {
+    render(
+      <PromptInput onGenerate={vi.fn()} isLoading={false} history={['최근', '예전']} />,
+    );
+
+    const items = screen.getAllByRole('button', { name: /최근$|예전/ });
+    expect(items.map((el) => el.textContent)).toEqual(['최근', '예전']);
+  });
+
+  it('히스토리 항목을 누르면 입력란에 채워진다', async () => {
+    const user = userEvent.setup();
+    render(<PromptInput onGenerate={vi.fn()} isLoading={false} history={['프로필 카드']} />);
+
+    await user.click(screen.getByRole('button', { name: '프로필 카드' }));
+
+    expect(screen.getByRole('textbox')).toHaveValue('프로필 카드');
+  });
+
+  it('기록 지우기를 누르면 onClearHistory를 호출한다', async () => {
+    const onClearHistory = vi.fn();
+    const user = userEvent.setup();
+    render(
+      <PromptInput
+        onGenerate={vi.fn()}
+        isLoading={false}
+        history={['프로필 카드']}
+        onClearHistory={onClearHistory}
+      />,
+    );
+
+    await user.click(screen.getByRole('button', { name: '기록 지우기' }));
+
+    expect(onClearHistory).toHaveBeenCalled();
+  });
+
   it('현재 글자 수를 상한과 함께 보여준다', async () => {
     const user = userEvent.setup();
     render(<PromptInput onGenerate={vi.fn()} isLoading={false} />);

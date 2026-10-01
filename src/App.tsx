@@ -5,6 +5,15 @@ import { Taskbar } from './components/Taskbar';
 import { MessageBox } from './components/MessageBox';
 import { AppIcon, EmptyIcon, KeyMissingIcon, KeyReadyIcon } from './components/Icons';
 import { useComponentGenerator } from './hooks/useComponentGenerator';
+import { usePersistentState } from './hooks/usePersistentState';
+import {
+  STORAGE_KEYS,
+  addPrompt,
+  parseHistory,
+  parseProvider,
+  purgeStoredApiKey,
+  restoredIds,
+} from './utils/storage';
 import type { Provider } from './types';
 import './App.css';
 
@@ -13,19 +22,33 @@ const PROVIDER_CONFIG = {
   google: { label: 'Google', placeholder: 'AIza...' },
 } as const;
 
+// 모듈 로드 시 한 번: 키를 저장했던 버전을 쓰던 브라우저에서 값을 걷어낸다.
+purgeStoredApiKey();
+
 function App() {
+  // API 키는 저장하지 않는다 — 이유는 utils/storage.ts의 LEGACY_API_KEY_KEY 주석.
   const [apiKey, setApiKey] = useState('');
   const [showKey, setShowKey] = useState(false);
-  const [provider, setProvider] = useState<Provider>('google');
+  const [provider, setProvider] = usePersistentState<Provider>(
+    STORAGE_KEYS.provider,
+    'google',
+    parseProvider,
+  );
+  const [history, setHistory] = usePersistentState<string[]>(
+    STORAGE_KEYS.history,
+    [],
+    parseHistory,
+  );
   const [envKeys, setEnvKeys] = useState<Record<Provider, boolean>>({
     anthropic: false,
     google: false,
   });
-  const [minimized, setMinimized] = useState<string[]>([]);
-  const [keyError, setKeyError] = useState<string | null>(null);
-  const [errorDismissed, setErrorDismissed] = useState(false);
   const { components, isLoading, error, generate, removeComponent, clearAll } =
     useComponentGenerator();
+  // 저장소에서 되살아난 창만 접힌 상태로 시작한다. 새로 생성한 창은 펼쳐진다.
+  const [minimized, setMinimized] = useState<string[]>(() => restoredIds(components));
+  const [keyError, setKeyError] = useState<string | null>(null);
+  const [errorDismissed, setErrorDismissed] = useState(false);
 
   useEffect(() => {
     fetch('/api/config')
@@ -54,6 +77,7 @@ function App() {
       return;
     }
     setKeyError(null);
+    setHistory((prev) => addPrompt(prev, prompt));
     generate(prompt, apiKey || undefined, provider);
   };
 
@@ -124,7 +148,12 @@ function App() {
 
           <div className="window__body">
             <div className="workbench">
-              <PromptInput onGenerate={handleGenerate} isLoading={isLoading} />
+              <PromptInput
+                onGenerate={handleGenerate}
+                isLoading={isLoading}
+                history={history}
+                onClearHistory={() => setHistory([])}
+              />
 
               <fieldset className="groupbox">
                 <legend>실행 설정</legend>

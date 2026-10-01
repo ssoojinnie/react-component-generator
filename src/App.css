@@ -289,6 +289,13 @@
   margin-top: 12px;
 }
 
+.examples__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
 .listbox {
   max-height: 128px;
   overflow-y: auto;
