@@ -43,7 +43,7 @@ function App() {
     anthropic: false,
     google: false,
   });
-  const { components, isLoading, error, generate, removeComponent, clearAll } =
+  const { components, isLoading, error, streamingId, generate, removeComponent, clearAll } =
     useComponentGenerator();
   // 저장소에서 되살아난 창만 접힌 상태로 시작한다. 새로 생성한 창은 펼쳐진다.
   const [minimized, setMinimized] = useState<string[]>(() => restoredIds(components));
@@ -215,7 +215,7 @@ function App() {
               </fieldset>
             </div>
 
-            {isLoading && (
+            {isLoading && !streamingId && (
               <div className="progress" role="status">
                 <p className="progress__label">
                   {providerLabel}에 요청을 보냈습니다. 응답을 기다리는 중입니다.
@@ -275,6 +275,7 @@ function App() {
                     key={component.id}
                     component={component}
                     isMinimized={minimized.includes(component.id)}
+                    isStreaming={streamingId === component.id}
                     onToggleMinimize={toggleMinimize}
                     onRemove={handleRemove}
                     onRegenerate={handleGenerate}
