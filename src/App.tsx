@@ -24,7 +24,7 @@ function App() {
   const [minimized, setMinimized] = useState<string[]>([]);
   const [keyError, setKeyError] = useState<string | null>(null);
   const [errorDismissed, setErrorDismissed] = useState(false);
-  const { components, isLoading, error, generate, removeComponent, clearAll } =
+  const { components, isLoading, error, streamingId, generate, removeComponent, clearAll } =
     useComponentGenerator();
 
   useEffect(() => {
@@ -186,7 +186,7 @@ function App() {
               </fieldset>
             </div>
 
-            {isLoading && (
+            {isLoading && !streamingId && (
               <div className="progress" role="status">
                 <p className="progress__label">
                   {providerLabel}에 요청을 보냈습니다. 응답을 기다리는 중입니다.
@@ -246,6 +246,7 @@ function App() {
                     key={component.id}
                     component={component}
                     isMinimized={minimized.includes(component.id)}
+                    isStreaming={streamingId === component.id}
                     onToggleMinimize={toggleMinimize}
                     onRemove={handleRemove}
                     onRegenerate={handleGenerate}

@@ -397,6 +397,11 @@
     width: 100%;
     animation: none;
   }
+
+  /* 깜빡임을 멈추고 커서만 남긴다. */
+  .code__caret {
+    animation: none;
+  }
 }
 
 /* --- Dialog box ------------------------------------------- */
@@ -616,6 +621,29 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* 스트리밍 중 표시. 색은 팔레트 토큰만 쓴다 (src/AGENTS.md). */
+.code__live {
+  color: var(--navy);
+  font-weight: bold;
+}
+
+/* 커서를 깜빡여 코드가 아직 흘러 들어오는 중임을 알린다. */
+.code__caret {
+  display: inline-block;
+  width: 7px;
+  height: 12px;
+  margin-left: 1px;
+  vertical-align: text-bottom;
+  background: var(--text);
+  animation: caret-blink 1s step-end infinite;
+}
+
+@keyframes caret-blink {
+  50% {
+    background: transparent;
+  }
 }
 
 .code__block {
