@@ -1,5 +1,7 @@
 import { useState, useCallback } from 'react';
 import type { GeneratedComponent, Provider } from '../types';
+import { STORAGE_KEYS, parseComponents } from '../utils/storage';
+import { usePersistentState } from './usePersistentState';
 
 interface UseComponentGeneratorReturn {
   components: GeneratedComponent[];
@@ -11,7 +13,13 @@ interface UseComponentGeneratorReturn {
 }
 
 export function useComponentGenerator(): UseComponentGeneratorReturn {
-  const [components, setComponents] = useState<GeneratedComponent[]>([]);
+  // 생성 결과는 새로고침 후에도 열려 있어야 한다. 로딩·에러는 그 요청 한 번의
+  // 상태이므로 저장하지 않는다.
+  const [components, setComponents] = usePersistentState<GeneratedComponent[]>(
+    STORAGE_KEYS.components,
+    [],
+    parseComponents,
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -46,15 +54,15 @@ export function useComponentGenerator(): UseComponentGeneratorReturn {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [setComponents]);
 
   const removeComponent = useCallback((id: string) => {
     setComponents((prev) => prev.filter((c) => c.id !== id));
-  }, []);
+  }, [setComponents]);
 
   const clearAll = useCallback(() => {
     setComponents([]);
-  }, []);
+  }, [setComponents]);
 
   return { components, isLoading, error, generate, removeComponent, clearAll };
 }

@@ -5,6 +5,8 @@ import { Taskbar } from './components/Taskbar';
 import { MessageBox } from './components/MessageBox';
 import { AppIcon, EmptyIcon, KeyMissingIcon, KeyReadyIcon } from './components/Icons';
 import { useComponentGenerator } from './hooks/useComponentGenerator';
+import { usePersistentState } from './hooks/usePersistentState';
+import { STORAGE_KEYS, addPrompt, parseHistory, parseProvider } from './utils/storage';
 import type { Provider } from './types';
 import './App.css';
 
@@ -14,9 +16,18 @@ const PROVIDER_CONFIG = {
 } as const;
 
 function App() {
-  const [apiKey, setApiKey] = useState('');
+  const [apiKey, setApiKey] = usePersistentState(STORAGE_KEYS.apiKey, '', (raw) => raw);
   const [showKey, setShowKey] = useState(false);
-  const [provider, setProvider] = useState<Provider>('google');
+  const [provider, setProvider] = usePersistentState<Provider>(
+    STORAGE_KEYS.provider,
+    'google',
+    parseProvider,
+  );
+  const [history, setHistory] = usePersistentState<string[]>(
+    STORAGE_KEYS.history,
+    [],
+    parseHistory,
+  );
   const [envKeys, setEnvKeys] = useState<Record<Provider, boolean>>({
     anthropic: false,
     google: false,
@@ -54,6 +65,7 @@ function App() {
       return;
     }
     setKeyError(null);
+    setHistory((prev) => addPrompt(prev, prompt));
     generate(prompt, apiKey || undefined, provider);
   };
 
@@ -124,7 +136,12 @@ function App() {
 
           <div className="window__body">
             <div className="workbench">
-              <PromptInput onGenerate={handleGenerate} isLoading={isLoading} />
+              <PromptInput
+                onGenerate={handleGenerate}
+                isLoading={isLoading}
+                history={history}
+                onClearHistory={() => setHistory([])}
+              />
 
               <fieldset className="groupbox">
                 <legend>실행 설정</legend>
