@@ -4,11 +4,30 @@ export const MAX_HISTORY = 10;
 
 // 한 도메인(localhost:5173)을 다른 앱과 공유할 수 있으니 접두사를 붙인다.
 export const STORAGE_KEYS = {
-  apiKey: 'rcg.apiKey',
   provider: 'rcg.provider',
   history: 'rcg.history',
   components: 'rcg.components',
 } as const;
+
+// API 키는 저장하지 않는다. react-live가 모델이 만든 코드를 이 페이지와 같은
+// realm에서 실행하므로(LivePreview의 noInline), localStorage에 둔 키는 생성된
+// 코드가 그대로 읽어 외부로 보낼 수 있다. sessionStorage도 같은 realm이라
+// 해결되지 않는다. 이전 버전이 저장해 둔 키는 시작할 때 지운다.
+export const LEGACY_API_KEY_KEY = 'rcg.apiKey';
+
+export function purgeStoredApiKey(): void {
+  try {
+    localStorage.removeItem(LEGACY_API_KEY_KEY);
+  } catch {
+    // 스토리지가 막힌 환경이면 애초에 저장된 키도 없다.
+  }
+}
+
+// 복원된 창은 접은 상태로 띄운다 — 펼쳐서 복원하면 저장된 코드가 로드마다
+// 자동 실행되고, 폭주하는 코드에서 새로고침으로 빠져나올 수 없게 된다.
+export function restoredIds(components: GeneratedComponent[]): string[] {
+  return components.map((c) => c.id);
+}
 
 const PROVIDERS: Provider[] = ['anthropic', 'google'];
 

@@ -1,10 +1,13 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
+  LEGACY_API_KEY_KEY,
   MAX_HISTORY,
   addPrompt,
   parseComponents,
   parseHistory,
   parseProvider,
+  purgeStoredApiKey,
+  restoredIds,
 } from './storage';
 
 describe('addPrompt', () => {
@@ -31,6 +34,46 @@ describe('addPrompt', () => {
     expect(result).toHaveLength(MAX_HISTORY);
     expect(result[0]).toBe('최신');
     expect(result).not.toContain(`p${MAX_HISTORY - 1}`);
+  });
+});
+
+describe('purgeStoredApiKey', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+    localStorage.clear();
+  });
+
+  it('이전 버전이 저장한 API 키를 지운다', () => {
+    localStorage.setItem(LEGACY_API_KEY_KEY, 'sk-ant-예전키');
+
+    purgeStoredApiKey();
+
+    expect(localStorage.getItem(LEGACY_API_KEY_KEY)).toBeNull();
+  });
+
+  it('스토리지 접근이 실패해도 던지지 않는다', () => {
+    vi.spyOn(window.localStorage, 'removeItem').mockImplementation(() => {
+      throw new Error('접근 거부');
+    });
+
+    expect(() => purgeStoredApiKey()).not.toThrow();
+  });
+});
+
+describe('restoredIds', () => {
+  it('복원된 컴포넌트의 id를 모두 준다', () => {
+    const at = new Date('2026-10-01T00:00:00.000Z');
+
+    expect(
+      restoredIds([
+        { id: 'a', prompt: 'p', code: 'c', createdAt: at },
+        { id: 'b', prompt: 'p', code: 'c', createdAt: at },
+      ]),
+    ).toEqual(['a', 'b']);
+  });
+
+  it('복원된 것이 없으면 빈 배열을 준다', () => {
+    expect(restoredIds([])).toEqual([]);
   });
 });
 

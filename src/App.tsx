@@ -6,7 +6,14 @@ import { MessageBox } from './components/MessageBox';
 import { AppIcon, EmptyIcon, KeyMissingIcon, KeyReadyIcon } from './components/Icons';
 import { useComponentGenerator } from './hooks/useComponentGenerator';
 import { usePersistentState } from './hooks/usePersistentState';
-import { STORAGE_KEYS, addPrompt, parseHistory, parseProvider } from './utils/storage';
+import {
+  STORAGE_KEYS,
+  addPrompt,
+  parseHistory,
+  parseProvider,
+  purgeStoredApiKey,
+  restoredIds,
+} from './utils/storage';
 import type { Provider } from './types';
 import './App.css';
 
@@ -15,8 +22,12 @@ const PROVIDER_CONFIG = {
   google: { label: 'Google', placeholder: 'AIza...' },
 } as const;
 
+// 모듈 로드 시 한 번: 키를 저장했던 버전을 쓰던 브라우저에서 값을 걷어낸다.
+purgeStoredApiKey();
+
 function App() {
-  const [apiKey, setApiKey] = usePersistentState(STORAGE_KEYS.apiKey, '', (raw) => raw);
+  // API 키는 저장하지 않는다 — 이유는 utils/storage.ts의 LEGACY_API_KEY_KEY 주석.
+  const [apiKey, setApiKey] = useState('');
   const [showKey, setShowKey] = useState(false);
   const [provider, setProvider] = usePersistentState<Provider>(
     STORAGE_KEYS.provider,
@@ -32,11 +43,12 @@ function App() {
     anthropic: false,
     google: false,
   });
-  const [minimized, setMinimized] = useState<string[]>([]);
-  const [keyError, setKeyError] = useState<string | null>(null);
-  const [errorDismissed, setErrorDismissed] = useState(false);
   const { components, isLoading, error, generate, removeComponent, clearAll } =
     useComponentGenerator();
+  // 저장소에서 되살아난 창만 접힌 상태로 시작한다. 새로 생성한 창은 펼쳐진다.
+  const [minimized, setMinimized] = useState<string[]>(() => restoredIds(components));
+  const [keyError, setKeyError] = useState<string | null>(null);
+  const [errorDismissed, setErrorDismissed] = useState(false);
 
   useEffect(() => {
     fetch('/api/config')
